@@ -4,9 +4,11 @@ import cookieParser from "cookie-parser";
 import { env } from "./config";
 import { prisma } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
+import { authRouter } from "./routes/auth.routes";
 
 export function createApp() {
   const app = express();
+  app.disable("x-powered-by");
 
   app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true }));
   app.use(express.json());
@@ -16,6 +18,8 @@ export function createApp() {
     await prisma.$queryRaw`SELECT 1`;
     res.json({ status: "ok" });
   });
+  
+  app.use("/api/auth", authRouter);
 
   app.use(errorHandler);
   return app;
