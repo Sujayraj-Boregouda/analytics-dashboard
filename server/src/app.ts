@@ -5,6 +5,7 @@ import { env } from "./config";
 import { prisma } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
 import { authRouter } from "./routes/auth.routes";
+import { analyticsRouter } from "./routes/analytics.routes";
 
 export function createApp() {
   const app = express();
@@ -20,6 +21,7 @@ export function createApp() {
   });
   
   app.use("/api/auth", authRouter);
+  app.use("/api/analytics", analyticsRouter);
 
   app.use(errorHandler);
   return app;
