@@ -1,34 +1,21 @@
-import { useEffect, useState } from "react";
-
-type Health = { status: string };
+import { Navigate, Route, Routes } from "react-router";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
+import { DashboardPage } from "./pages/DashboardPage";
+import { LoginPage } from "./pages/LoginPage";
 
 export default function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetch("/api/health", { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server replied ${res.status}`);
-        return res.json() as Promise<Health>;
-      })
-      .then(setHealth)
-      .catch((err: unknown) => {
-        if (err instanceof DOMException && err.name === "AbortError") return;
-        setError(err instanceof Error ? err.message : "Something went wrong");
-      });
-
-    return () => controller.abort();
-  }, []);
-
   return (
-    <main style={{ fontFamily: "system-ui", padding: 32 }}>
-      <h1>Analytics Dashboard</h1>
-      {error && <p>API error: {error}</p>}
-      {!error && !health && <p>Checking the API…</p>}
-      {health && <p>API status: {health.status}</p>}
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
