@@ -3,6 +3,8 @@ import type { FormEvent } from "react";
 import { Navigate, useLocation } from "react-router";
 import { useAuth } from "../auth/useAuth";
 import { ApiError } from "../lib/api";
+import { Alert, Button, Card, TextField } from "../components/ui";
+import styles from "./LoginPage.module.css";
 
 function loginErrorMessage(err: unknown): string {
   if (err instanceof ApiError) {
@@ -48,44 +50,44 @@ export function LoginPage() {
   }
 
   return (
-    <main style={{ fontFamily: "system-ui", maxWidth: 360, margin: "80px auto", padding: "0 16px" }}>
-      <h1>Sign in</h1>
+    <div className={styles.page}>
+      <div className={styles.panel}>
+        <div className={styles.intro}>
+          <span className={styles.brand}>Event Analytics</span>
+          <h1 className={styles.title}>Sign in</h1>
+          <p className={styles.subtitle}>See registrations, payments and revenue at a glance.</p>
+        </div>
 
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12 }}>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="username"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <Card>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <TextField
+              label="Email"
+              type="email"
+              autoComplete="username"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {error && <Alert>{error}</Alert>}
+            <Button type="submit" loading={submitting} className={styles.submit}>
+              {submitting ? "Signing in…" : "Sign in"}
+            </Button>
+          </form>
+        </Card>
 
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {error && (
-          <p role="alert" style={{ color: "crimson", margin: 0 }}>
-            {error}
-          </p>
-        )}
-
-        <button type="submit" disabled={submitting}>
-          {submitting ? "Signing in…" : "Sign in"}
-        </button>
-      </form>
-
-      <p style={{ fontSize: 14, color: "#666" }}>
-        Demo accounts: admin@demo.com or viewer@demo.com, password admin123
-      </p>
-    </main>
+        <p className={styles.demo}>
+          Demo accounts: <strong>admin@demo.com</strong> or <strong>viewer@demo.com</strong>,
+          password <strong>admin123</strong>
+        </p>
+      </div>
+    </div>
   );
 }

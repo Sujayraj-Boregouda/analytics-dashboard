@@ -1,0 +1,103 @@
+:root {
+    /* Colours */
+    --color-bg: #f4f6fa;
+    --color-surface: #ffffff;
+    --color-surface-muted: #f0f2f7;
+    --color-border: #dde2eb;
+    --color-text: #172033;
+    --color-text-muted: #5b6579;
+    --color-primary: #3a4fd8;
+    --color-primary-hover: #2f41b8;
+    --color-primary-soft: #e8ebfc;
+    --color-on-primary: #ffffff;
+    --color-success: #1d8a57;
+    --color-success-soft: #e0f3e9;
+    --color-warning: #a8650b;
+    --color-warning-soft: #fbefd9;
+    --color-danger: #c2334a;
+    --color-danger-soft: #fbe5e8;
+  
+    /* Spacing, in 4px steps */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+  
+    /* Shape */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  
+    /* Type */
+    --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --text-sm: 13px;
+    --text-md: 15px;
+    --text-lg: 18px;
+    --text-xl: 24px;
+    --text-2xl: 30px;
+  
+    color-scheme: light;
+  }
+  
+  /* Dark mode: only the colours change, everything else stays the same */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #10141d;
+      --color-surface: #181e2a;
+      --color-surface-muted: #1f2635;
+      --color-border: #2b3344;
+      --color-text: #e6e9f0;
+      --color-text-muted: #9aa3b5;
+      --color-primary: #7c8cff;
+      --color-primary-hover: #98a5ff;
+      --color-primary-soft: #252c4d;
+      --color-on-primary: #0d1020;
+      --color-success: #4cc38a;
+      --color-success-soft: #16301f;
+      --color-warning: #f0a847;
+      --color-warning-soft: #3a2a12;
+      --color-danger: #f07186;
+      --color-danger-soft: #3b1a21;
+      --shadow-card: none;
+      color-scheme: dark;
+    }
+  }
+  
+  /* Base styles */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+  
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }

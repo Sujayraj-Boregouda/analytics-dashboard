@@ -7,7 +7,7 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   if (status === "loading") {
-    return <p style={{ padding: 32, fontFamily: "system-ui" }}>Loading…</p>;
+    return <p style={{ padding: "var(--space-6)", color: "var(--color-text-muted)" }}>Loading…</p>;
   }
 
   if (status === "anonymous") {

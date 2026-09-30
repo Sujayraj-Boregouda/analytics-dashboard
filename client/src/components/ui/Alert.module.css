@@ -1,0 +1,18 @@
+.alert {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    font-size: var(--text-sm);
+  }
+  
+  .danger {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+    border-color: color-mix(in srgb, var(--color-danger) 30%, transparent);
+  }
+  
+  .info {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
