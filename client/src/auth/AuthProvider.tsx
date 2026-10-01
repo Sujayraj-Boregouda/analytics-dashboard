@@ -8,8 +8,9 @@ import type { AuthState } from "./context";
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<AuthState["status"]>("loading");
+  const [checkCount, setCheckCount] = useState(0);
 
-  // When the app first opens, ask the server: "who am I?"
+  // Ask the server "who am I?" when the app opens, and again on retry
   useEffect(() => {
     const controller = new AbortController();
 
@@ -21,12 +22,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .catch((err: unknown) => {
         if (controller.signal.aborted) return;
-        setUser(null);
-        setStatus("anonymous");
-        if (!(err instanceof ApiError && err.status === 401)) console.error(err);
+
+        // The server answered "I don't know you" → really logged out
+        if (err instanceof ApiError && (err.status === 401 || err.status === 404)) {
+          setUser(null);
+          setStatus("anonymous");
+          return;
+        }
+
+        // We couldn't get an answer at all → don't assume anything
+        console.error(err);
+        setStatus("unavailable");
       });
 
     return () => controller.abort();
+  }, [checkCount]);
+
+  const retry = useCallback(() => {
+    setStatus("loading");
+    setCheckCount((n) => n + 1);
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -42,8 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, status, login, logout }),
-    [user, status, login, logout],
+    () => ({ user, status, login, logout, retry }),
+    [user, status, login, logout, retry],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
