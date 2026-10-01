@@ -1,0 +1,17 @@
+.grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+  
+  @media (min-width: 520px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
