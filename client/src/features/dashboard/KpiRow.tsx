@@ -1,25 +1,32 @@
 import { Badge, ErrorState, StatCard } from "../../components/ui";
+import { cx } from "../../lib/cx";
 import { formatCurrency, formatNumber, formatPercent } from "../../lib/format";
 import { useApiData } from "../../lib/useApiData";
 import type { Summary } from "../../types/api";
 import styles from "./KpiRow.module.css";
 
-export function KpiRow() {
-  const { data, error, loading, reload } = useApiData<Summary>("/analytics/summary");
+type KpiRowProps = {
+  query: string;
+  rangeLabel: string;
+};
+
+export function KpiRow({ query, rangeLabel }: KpiRowProps) {
+  const { data, error, loading, reload } = useApiData<Summary>(`/analytics/summary?${query}`);
 
   if (error && !data) {
     return <ErrorState message="Couldn't load the summary numbers." onRetry={reload} />;
   }
 
   const showSkeleton = loading && !data;
+  const refreshing = loading && data !== null;
 
   return (
-    <div className={styles.grid}>
+    <div className={cx(styles.grid, refreshing && styles.refreshing)} aria-busy={loading}>
       <StatCard
         label="Registrations"
         loading={showSkeleton}
         value={data ? formatNumber(data.total) : undefined}
-        detail="Last 30 days"
+        detail={rangeLabel}
       />
       <StatCard
         label="Revenue"

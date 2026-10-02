@@ -37,3 +37,17 @@ export function useChartTheme(): ChartTheme {
 
   return theme;
 }
+
+export function tooltipStyle(theme: ChartTheme) {
+  return {
+    backgroundColor: theme.surface,
+    titleColor: theme.text,
+    bodyColor: theme.text,
+    borderColor: theme.grid,
+    borderWidth: 1,
+    padding: 10,
+    displayColors: false,
+    titleFont: { family: theme.font, weight: 600 },
+    bodyFont: { family: theme.font },
+  };
+}

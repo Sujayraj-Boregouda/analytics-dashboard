@@ -7,6 +7,18 @@ const currency = new Intl.NumberFormat("en-IN", {
   const number = new Intl.NumberFormat("en-IN");
   
   const shortDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short" });
+
+  const compactCurrency = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  });
+  
+  // 75000 → "₹75K"
+  export function formatCompactCurrency(value: number): string {
+    return compactCurrency.format(value);
+  }
   
   export function formatCurrency(value: number): string {
     return currency.format(value);

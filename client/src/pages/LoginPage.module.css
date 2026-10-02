@@ -48,3 +48,19 @@
     color: var(--color-text-muted);
     text-align: center;
   }
+
+  .charts {
+    display: grid;
+    gap: var(--space-5);
+  }
+  
+  /* Charts inside a grid must be allowed to shrink, or they overflow */
+  .charts > * {
+    min-width: 0;
+  }
+  
+  @media (min-width: 1024px) {
+    .chartsSplit {
+      grid-template-columns: 3fr 2fr;
+    }
+  }

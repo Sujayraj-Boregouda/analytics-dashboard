@@ -1,15 +1,20 @@
 import { useMemo } from "react";
 import type { ChartConfiguration } from "chart.js";
 import { ChartCanvas } from "../../components/charts/ChartCanvas";
-import { Card, ErrorState, Skeleton } from "../../components/ui";
+import { Card, EmptyState, ErrorState, Skeleton } from "../../components/ui";
 import { formatNumber, formatShortDate } from "../../lib/format";
 import { useApiData } from "../../lib/useApiData";
-import { useChartTheme } from "../../lib/useChartTheme";
+import { tooltipStyle, useChartTheme } from "../../lib/useChartTheme";
 import type { DailyPoint } from "../../types/api";
 
-export function RegistrationsTrend() {
+type RegistrationsTrendProps = {
+  query: string;
+  rangeLabel: string;
+};
+
+export function RegistrationsTrend({ query, rangeLabel }: RegistrationsTrendProps) {
   const { data, error, loading, reload } = useApiData<DailyPoint[]>(
-    "/analytics/registrations-daily",
+    `/analytics/registrations-daily?${query}`,
   );
   const theme = useChartTheme();
 
@@ -44,15 +49,7 @@ export function RegistrationsTrend() {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: theme.surface,
-            titleColor: theme.text,
-            bodyColor: theme.text,
-            borderColor: theme.grid,
-            borderWidth: 1,
-            padding: 10,
-            displayColors: false,
-            titleFont: { family: theme.font, weight: 600 },
-            bodyFont: { family: theme.font },
+            ...tooltipStyle(theme),
             callbacks: {
               label: (ctx) => {
                 const value = ctx.parsed.y ?? 0;
@@ -77,11 +74,7 @@ export function RegistrationsTrend() {
             beginAtZero: true,
             grid: { color: theme.grid },
             border: { display: false },
-            ticks: {
-              color: theme.muted,
-              font: { family: theme.font, size: 12 },
-              precision: 0,
-            },
+            ticks: { color: theme.muted, font: { family: theme.font, size: 12 }, precision: 0 },
           },
         },
       },
@@ -89,13 +82,15 @@ export function RegistrationsTrend() {
   }, [data, theme]);
 
   const total = data?.at(-1)?.cumulative;
+  const isEmpty = data !== null && data.every((d) => d.registrations === 0);
+  const refreshing = loading && data !== null;
 
   return (
     <Card
       title="Registrations per day"
-      description="New sign-ups across all events, last 30 days."
+      description={`New sign-ups, ${rangeLabel.toLowerCase()}.`}
       actions={
-        total !== undefined ? (
+        total !== undefined && !isEmpty ? (
           <span style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
             <strong style={{ color: "var(--color-text)" }}>{formatNumber(total)}</strong> in total
           </span>
@@ -104,14 +99,21 @@ export function RegistrationsTrend() {
     >
       {error && !data ? (
         <ErrorState message="Couldn't load the chart data." onRetry={reload} />
-      ) : loading && !config ? (
+      ) : !config ? (
         <Skeleton height={280} />
-      ) : config ? (
-        <ChartCanvas
-          config={config}
-          ariaLabel={`Line chart of daily registrations over the last 30 days, ${total ?? 0} in total.`}
+      ) : isEmpty ? (
+        <EmptyState
+          title="No registrations in this period"
+          message="Try a longer date range or a different event."
         />
-      ) : null}
+      ) : (
+        <div style={{ opacity: refreshing ? 0.55 : 1, transition: "opacity 150ms ease" }}>
+          <ChartCanvas
+            config={config}
+            ariaLabel={`Line chart of daily registrations, ${rangeLabel.toLowerCase()}, ${total ?? 0} in total.`}
+          />
+        </div>
+      )}
     </Card>
   );
 }

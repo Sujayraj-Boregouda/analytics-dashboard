@@ -20,3 +20,17 @@ export type DailyPoint = {
   registrations: number;
   cumulative: number;
 };
+
+export type EventOption = {
+  id: number;
+  name: string;
+  category: string;
+};
+
+export type RevenueRow = {
+  id: number;
+  name: string;
+  category: string;
+  registrations: number;
+  revenue: number;
+};

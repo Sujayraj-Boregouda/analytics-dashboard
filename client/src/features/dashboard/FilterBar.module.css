@@ -1,0 +1,17 @@
+.bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-4);
+  }
+  
+  .control {
+    flex: 1 1 200px;
+    max-width: 260px;
+  }
+  
+  @media (max-width: 520px) {
+    .control {
+      max-width: none;
+    }
+  }

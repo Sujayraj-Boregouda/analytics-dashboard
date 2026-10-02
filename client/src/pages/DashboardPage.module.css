@@ -1,21 +1,30 @@
 .pageHeader {
-    display: grid;
-    gap: var(--space-1);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+}
+
+.charts {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Charts inside a grid must be allowed to shrink, or they overflow */
+.charts > * {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .chartsSplit {
+    grid-template-columns: 3fr 2fr;
   }
-  
-  .title {
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  
-  .subtitle {
-    color: var(--color-text-muted);
-  }
-  
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3);
-  }
+}
