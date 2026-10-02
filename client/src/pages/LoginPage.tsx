@@ -1,9 +1,10 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Navigate, useLocation } from "react-router";
+import { canAccess } from "../auth/access";
 import { useAuth } from "../auth/useAuth";
-import { ApiError } from "../lib/api";
 import { Alert, Button, Card, TextField } from "../components/ui";
+import { ApiError } from "../lib/api";
 import styles from "./LoginPage.module.css";
 
 function loginErrorMessage(err: unknown): string {
@@ -17,7 +18,7 @@ function loginErrorMessage(err: unknown): string {
 }
 
 export function LoginPage() {
-  const { status, login } = useAuth();
+  const { status, user, login } = useAuth();
   const location = useLocation();
 
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Where to go after logging in (the page they originally wanted, or home)
+  // The page they originally wanted, if any
   const state: unknown = location.state;
   const from =
     typeof state === "object" && state !== null && "from" in state && typeof state.from === "string"
@@ -33,7 +34,9 @@ export function LoginPage() {
       : "/";
 
   if (status === "authenticated") {
-    return <Navigate to={from} replace />;
+    // Only go back to that page if THIS user is allowed to see it
+    const target = user && canAccess(from, user.role) ? from : "/";
+    return <Navigate to={target} replace />;
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
