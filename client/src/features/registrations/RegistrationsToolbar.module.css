@@ -1,0 +1,23 @@
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-4);
+  }
+  
+  .search {
+    flex: 2 1 240px;
+    max-width: 360px;
+  }
+  
+  .control {
+    flex: 1 1 180px;
+    max-width: 220px;
+  }
+  
+  @media (max-width: 520px) {
+    .search,
+    .control {
+      max-width: none;
+    }
+  }

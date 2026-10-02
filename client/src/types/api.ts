@@ -34,3 +34,23 @@ export type RevenueRow = {
   registrations: number;
   revenue: number;
 };
+
+export type RegistrationStatus = "PAID" | "PENDING" | "FAILED";
+
+export type Registration = {
+  id: number;
+  attendeeName: string;
+  attendeeEmail: string;
+  amount: number;
+  status: RegistrationStatus;
+  createdAt: string;
+  eventName: string;
+};
+
+export type Paginated<T> = {
+  items: T[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};

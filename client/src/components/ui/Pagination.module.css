@@ -1,0 +1,30 @@
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  
+  .summary {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  
+  .summary strong {
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+  
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  
+  .pageInfo {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }

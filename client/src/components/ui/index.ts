@@ -4,6 +4,8 @@ export { Button } from "./Button";
 export { Card } from "./Card";
 export { EmptyState } from "./EmptyState";
 export { ErrorState } from "./ErrorState";
+export { PageHeader } from "./PageHeader";
+export { Pagination } from "./Pagination";
 export { SelectField } from "./SelectField";
 export { Skeleton } from "./Skeleton";
 export { StatCard } from "./StatCard";
