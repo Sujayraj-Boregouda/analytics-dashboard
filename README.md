@@ -1,5 +1,7 @@
 # Event Analytics Dashboard
 
+[![CI](https://github.com/Sujayraj-Boregouda/analytics-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Sujayraj-Boregouda/analytics-dashboard/actions/workflows/ci.yml)
+
 A full-stack analytics dashboard for event registrations and payments. Admins and viewers sign in to see registrations, revenue and payment status over time, filter by date range and event, and (admins only) browse every registration with search, sorting and pagination.
 
 Built with **React + TypeScript** on the front end, **Node.js + Express + PostgreSQL** on the back end, and packaged with **Docker**.
@@ -46,7 +48,7 @@ Built with **React + TypeScript** on the front end, **Node.js + Express + Postgr
 | Backend | Node.js, Express 5, TypeScript (strict), Zod, JSON Web Tokens, bcrypt |
 | Database | PostgreSQL 16, Prisma (schema and migrations), raw SQL for analytics queries |
 | Testing | Vitest, Supertest, React Testing Library |
-| Infrastructure | Docker (multi-stage builds), Docker Compose, Nginx |
+| Infrastructure | Docker (multi-stage builds), Docker Compose, Nginx, GitHub Actions |
 
 ---
 
@@ -141,6 +143,7 @@ cd client && npm test     # component and hook tests (no server needed)
 
 - **API tests** call the real Express app with Supertest and cover login, role checks, input validation, analytics queries and pagination.
 - **Frontend tests** use React Testing Library to test components the way a user would, by label and role, including a regression test for the post-login redirect.
+- **Continuous integration:** GitHub Actions runs the API tests against a fresh PostgreSQL database, the frontend lint, tests and build, and both Docker builds on every push and pull request.
 
 ---
 
@@ -208,5 +211,5 @@ analytics-dashboard/
 
 ## Roadmap
 
-- [ ] Run the tests automatically on every push with GitHub Actions
+- [x] Run the tests automatically on every push with GitHub Actions
 - [ ] Deploy to AWS with HTTPS
