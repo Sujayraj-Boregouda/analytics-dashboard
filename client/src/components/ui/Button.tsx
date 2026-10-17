@@ -13,7 +13,7 @@ export function Button({
   disabled,
   className,
   children,
-  type = "button",
+  type = "submit",
   ...rest
 }: ButtonProps) {
   return (
